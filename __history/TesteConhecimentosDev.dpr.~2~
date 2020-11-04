@@ -1,0 +1,14 @@
+program TesteConhecimentosDev;
+
+uses
+  Vcl.Forms,
+  UniProducts in 'UniProducts.pas' {FrmProducts};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmProducts, FrmProducts);
+  Application.Run;
+end.

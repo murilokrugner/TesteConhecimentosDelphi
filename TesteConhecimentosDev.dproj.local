@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2020/11/04 10:05:17.000.443,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 10:05:32.000.092,C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniProducts.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/11/04 10:05:32.000.092,C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniProducts.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 10:05:42.000.417,C:\Users\supor\Documents\Embarcadero\Studio\Projects\TesteConhecimentosDev.dproj=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2020/11/04 10:07:52.000.864,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 10:08:06.000.269,C:\Users\supor\Documents\Embarcadero\Studio\Projects\DataModule.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/11/04 10:08:06.000.269,C:\Users\supor\Documents\Embarcadero\Studio\Projects\DataModule.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 13:53:20.522,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 13:53:32.133,C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchClient.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/11/04 13:53:32.133,C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchClient.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 13:57:40.761,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/04 13:57:49.003,C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchProduct.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/11/04 13:57:49.003,C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchProduct.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

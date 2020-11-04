@@ -1,0 +1,82 @@
+unit UniSearchClient;
+
+interface
+
+uses
+    Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+    System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB,
+    FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+    FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+    FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+    Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids;
+
+type
+    TFrmSearchClient = class(TForm)
+        DBGrid1: TDBGrid;
+        Panel1: TPanel;
+        EditCod: TEdit;
+        Label1: TLabel;
+        btnSearch: TButton;
+        QryClients: TFDQuery;
+        dsClients: TDataSource;
+        procedure btnSearchClick(Sender: TObject);
+        procedure DBGrid1DblClick(Sender: TObject);
+    private
+    { Private declarations }
+    public
+    { Public declarations }
+    end;
+
+var
+    FrmSearchClient: TFrmSearchClient;
+
+implementation
+
+uses
+    DataModule, UniProducts;
+
+{$R *.dfm}
+
+procedure TFrmSearchClient.btnSearchClick(Sender: TObject);
+begin
+    if EditCod.Text = '' then
+    begin
+        ShowMessage('Por favor, informe o código do Cliente');
+        Exit;
+    end;
+
+    with QryClients, SQL do
+    begin
+        Close;
+        Clear;
+
+        Add('SELECT * FROM CLIENTES WHERE CODIGO = :CODIGO');
+
+        ParamByName('CODIGO').AsInteger := StrToInt(EditCod.Text);
+
+        Open;
+
+        if IsEmpty then
+        begin
+            ShowMessage('Nenhum cliente cadastrado com esse código');
+            Exit;
+        end;
+
+    end;
+end;
+
+procedure TFrmSearchClient.DBGrid1DblClick(Sender: TObject);
+begin
+    with FrmProducts do
+    begin
+        EditCodClient.Text := DBGrid1.columns.items[0].field.text;
+        EditDescClient.Text := DBGrid1.columns.items[1].field.text;
+        EditCityClient.Text := DBGrid1.columns.items[2].field.text;
+        EditUfClient.Text := DBGrid1.columns.items[3].field.text;
+
+     //   FrmSearchClient.CloseModal;
+    end;
+end;
+
+end.
+
