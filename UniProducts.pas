@@ -309,7 +309,7 @@ begin
 
             Open;
 
-            if IsEmpty then
+            if Fields[0].AsString = '' then
             begin
                 EditCodOrder.Text := '1';
             end

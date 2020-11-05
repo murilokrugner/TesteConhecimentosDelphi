@@ -207,7 +207,20 @@ begin
 
             DataModule1.tr.StartTransaction;
 
-            Add('DELETE FROM VENDAS WHERE CODIGO = :CODIGO');
+            Add('DELETE FROM VENDAS_PRODUTOS WHERE COD_VENDA = :CODIGO');
+
+            ParamByName('CODIGO').AsInteger := StrToInt(EditCodOrder.Text);
+
+            ExecSQL;
+
+            DataModule1.tr.Commit;
+
+            Close;
+            Clear;
+
+            DataModule1.tr.StartTransaction;
+
+            Add('DELETE FROM VENDAS WHERE COD_VENDA = :CODIGO');
 
             ParamByName('CODIGO').AsInteger := StrToInt(EditCodOrder.Text);
 
@@ -217,6 +230,17 @@ begin
 
             EditCodOrder.Clear;
             EditDate.Clear;
+
+            EditDescClient.Clear;
+            EditCodClient.Clear;
+            EditCityClient.Clear;
+            EditUfClient.Clear;
+            EditCodProduct.Clear;
+            EditDate.Clear;
+            EditQuant.Clear;
+            EditPriceProduct.Clear;
+            EditTotal.Clear;
+            EdiDescProduct.Clear;
         end;
     except
         on e: exception do
@@ -260,8 +284,6 @@ begin
     btnAdd.Enabled := True;
     btnClear.Enabled := True;
 
-    EditCodOrder.Clear;
-    EditDate.Clear;
     EditDescClient.Clear;
     EditCodClient.Clear;
     EditCityClient.Clear;
@@ -275,6 +297,8 @@ begin
 
     EditCodOrder.SetFocus;
 
+    QueryAllProducts.Active := False;
+
     try
         with QryOrder, SQL do
         begin
@@ -285,7 +309,7 @@ begin
 
             Open;
 
-            if IsEmpty then
+            if Fields[0].AsString = null then
             begin
                 EditCodOrder.Text := '1';
             end
@@ -347,69 +371,72 @@ begin
         number_order := Fields[0].AsInteger;
     end;
 
-    with QryProdutos, SQL do
+    if DBGridProducts.DataSource.DataSet.RecordCount <> 0 then
     begin
-        try
-            Close;
-            Clear;
-
-            Add('UPDATE VENDAS_PRODUTOS SET QUANTIDADE = :QNT, VALOR_TOTAL = :VALOR, VALOR_UNITARIO = :UNITARIO');
-            Add('WHERE COD_VENDA = :VENDA AND COD_PRODUTO = :PRODUTO');
-
-            ParamByName('VALOR').AsFloat := StrToFloat(DBGridProducts.columns.items[2].field.text) * StrToFloat(DBGridProducts.columns.items[3].field.text);
-            ParamByName('UNITARIO').AsFloat := StrToFloat(DBGridProducts.columns.items[3].field.text);
-            ParamByName('QNT').AsInteger := StrToInt(DBGridProducts.columns.items[2].field.text);
-            ParamByName('VENDA').AsInteger := number_order;
-            ParamByName('PRODUTO').AsInteger := StrToInt(DBGridProducts.columns.items[0].field.text);
-
-            DataModule1.tr.StartTransaction;
-
-            ExecSQL;
-
-            DataModule1.tr.Commit;
-
-            with QueryAllProducts, SQL do
-            begin
+        with QryProdutos, SQL do
+        begin
+            try
                 Close;
                 Clear;
 
-                Add('SELECT VP.COD_PRODUTO, P.DESCRICAO, VP.QUANTIDADE, VP.VALOR_UNITARIO,');
-                Add('VP.VALOR_TOTAL FROM VENDAS_PRODUTOS AS VP ');
-                Add('INNER JOIN PRODUTOS AS P ON P.CODIGO = VP.COD_PRODUTO ');
-                Add('WHERE VP.COD_VENDA = :VENDA ');
+                Add('UPDATE VENDAS_PRODUTOS SET QUANTIDADE = :QNT, VALOR_TOTAL = :VALOR, VALOR_UNITARIO = :UNITARIO');
+                Add('WHERE COD_VENDA = :VENDA AND COD_PRODUTO = :PRODUTO');
 
+                ParamByName('VALOR').AsFloat := StrToFloat(DBGridProducts.columns.items[2].field.text) * StrToFloat(DBGridProducts.columns.items[3].field.text);
+                ParamByName('UNITARIO').AsFloat := StrToFloat(DBGridProducts.columns.items[3].field.text);
+                ParamByName('QNT').AsInteger := StrToInt(DBGridProducts.columns.items[2].field.text);
                 ParamByName('VENDA').AsInteger := number_order;
+                ParamByName('PRODUTO').AsInteger := StrToInt(DBGridProducts.columns.items[0].field.text);
 
-                Open;
+                DataModule1.tr.StartTransaction;
 
-                QueryAllProducts.Active := True;
+                ExecSQL;
+
+                DataModule1.tr.Commit;
+
+                with QueryAllProducts, SQL do
+                begin
+                    Close;
+                    Clear;
+
+                    Add('SELECT VP.COD_PRODUTO, P.DESCRICAO, VP.QUANTIDADE, VP.VALOR_UNITARIO,');
+                    Add('VP.VALOR_TOTAL FROM VENDAS_PRODUTOS AS VP ');
+                    Add('INNER JOIN PRODUTOS AS P ON P.CODIGO = VP.COD_PRODUTO ');
+                    Add('WHERE VP.COD_VENDA = :VENDA ');
+
+                    ParamByName('VENDA').AsInteger := number_order;
+
+                    Open;
+
+                    QueryAllProducts.Active := True;
+                end;
+
+                with QryTotal, SQL do
+                begin
+
+                    Close;
+                    Clear;
+
+                    Add('SELECT SUM(VALOR_TOTAL) AS TOTAL FROM VENDAS_PRODUTOS');
+                    Add('WHERE COD_VENDA = :VENDA');
+
+                    ParamByName('VENDA').AsInteger := number_order;
+
+                    Open;
+
+                    EditTotal.Text := FormatFloat('0.00', Fields[0].AsFloat);
+                end;
+
+            except
+                on e: exception do
+                begin
+                    showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
+                    DataModule1.tr.Rollback;
+                    abort;
+                end;
             end;
-
-            with QryTotal, SQL do
-            begin
-
-                Close;
-                Clear;
-
-                Add('SELECT SUM(VALOR_TOTAL) AS TOTAL FROM VENDAS_PRODUTOS');
-                Add('WHERE COD_VENDA = :VENDA');
-
-                ParamByName('VENDA').AsInteger := number_order;
-
-                Open;
-
-                EditTotal.Text := FormatFloat('0.00', Fields[0].AsFloat);
-            end;
-
-        except
-            on e: exception do
-            begin
-                showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
-                DataModule1.tr.Rollback;
-                abort;
-            end;
-        end;
         //end;
+        end;
     end;
 
     with QryAuxOrder, SQL do
@@ -488,79 +515,83 @@ var
 begin
     if (Key = vk_delete) then
     begin
-        with QryProdutos, SQL do
+        if Application.MessageBox('Tem certeza que deseja excluir o produto?', 'Excluir produto?', mb_yesno + mb_iconquestion) = id_yes then
         begin
-            try
-                Close;
-                Clear;
-
-                Add('DELETE FROM VENDAS_PRODUTOS WHERE COD_PRODUTO = :PRODUTO');
-
-                ParamByName('PRODUTO').AsInteger := StrToInt(DBGridProducts.columns.items[0].field.text);
-
-                DataModule1.tr.StartTransaction;
-
-                ExecSQL;
-
-                DataModule1.tr.Commit;
-
-                ShowMessage('O produto foi deletado');
-
-                with QryAuxOrder, SQL do
-                begin
+            with QryProdutos, SQL do
+            begin
+                try
                     Close;
                     Clear;
 
-                    Add('SELECT CODIGO FROM VENDAS WHERE COD_VENDA = :VENDA');
+                    Add('DELETE FROM VENDAS_PRODUTOS WHERE COD_PRODUTO = :PRODUTO');
 
-                    ParamByName('VENDA').AsInteger := StrToInt(EditCodOrder.Text);
+                    ParamByName('PRODUTO').AsInteger := StrToInt(DBGridProducts.columns.items[0].field.text);
 
-                    Open;
+                    DataModule1.tr.StartTransaction;
 
-                    number_order := Fields[0].AsInteger;
-                end;
+                    ExecSQL;
 
-                with QueryAllProducts, SQL do
-                begin
-                    Close;
-                    Clear;
+                    DataModule1.tr.Commit;
 
-                    Add('SELECT VP.COD_PRODUTO, P.DESCRICAO, VP.QUANTIDADE, VP.VALOR_UNITARIO,');
-                    Add('VP.VALOR_TOTAL FROM VENDAS_PRODUTOS AS VP ');
-                    Add('INNER JOIN PRODUTOS AS P ON P.CODIGO = VP.COD_PRODUTO ');
-                    Add('WHERE VP.COD_VENDA = :VENDA ');
+                    ShowMessage('O produto foi deletado');
 
-                    ParamByName('VENDA').AsInteger := number_order;
+                    with QryAuxOrder, SQL do
+                    begin
+                        Close;
+                        Clear;
 
-                    Open;
+                        Add('SELECT CODIGO FROM VENDAS WHERE COD_VENDA = :VENDA');
 
-                    QueryAllProducts.Active := True;
-                end;
+                        ParamByName('VENDA').AsInteger := StrToInt(EditCodOrder.Text);
 
-                with QryTotal, SQL do
-                begin
+                        Open;
 
-                    Close;
-                    Clear;
+                        number_order := Fields[0].AsInteger;
+                    end;
 
-                    Add('SELECT SUM(VALOR_TOTAL) AS TOTAL FROM VENDAS_PRODUTOS');
-                    Add('WHERE COD_VENDA = :VENDA');
+                    with QueryAllProducts, SQL do
+                    begin
+                        Close;
+                        Clear;
 
-                    ParamByName('VENDA').AsInteger := number_order;
+                        Add('SELECT VP.COD_PRODUTO, P.DESCRICAO, VP.QUANTIDADE, VP.VALOR_UNITARIO,');
+                        Add('VP.VALOR_TOTAL FROM VENDAS_PRODUTOS AS VP ');
+                        Add('INNER JOIN PRODUTOS AS P ON P.CODIGO = VP.COD_PRODUTO ');
+                        Add('WHERE VP.COD_VENDA = :VENDA ');
 
-                    Open;
+                        ParamByName('VENDA').AsInteger := number_order;
 
-                    EditTotal.Text := FormatFloat('0.00', Fields[0].AsFloat);
-                end;
-            except
-                on e: exception do
-                begin
-                    showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
-                    DataModule1.tr.Rollback;
-                    abort;
+                        Open;
+
+                        QueryAllProducts.Active := True;
+                    end;
+
+                    with QryTotal, SQL do
+                    begin
+
+                        Close;
+                        Clear;
+
+                        Add('SELECT SUM(VALOR_TOTAL) AS TOTAL FROM VENDAS_PRODUTOS');
+                        Add('WHERE COD_VENDA = :VENDA');
+
+                        ParamByName('VENDA').AsInteger := number_order;
+
+                        Open;
+
+                        EditTotal.Text := FormatFloat('0.00', Fields[0].AsFloat);
+                    end;
+                except
+                    on e: exception do
+                    begin
+                        showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
+                        DataModule1.tr.Rollback;
+                        abort;
+                    end;
                 end;
             end;
         end;
+
     end;
 end;
 
