@@ -12,15 +12,15 @@ uses
 
 type
     TFrmSearchClient = class(TForm)
-    DBGridClients: TDBGrid;
         Panel1: TPanel;
         EditCod: TEdit;
         Label1: TLabel;
         btnSearch: TButton;
         QryClients: TFDQuery;
         dsClients: TDataSource;
+    DBGridClients: TDBGrid;
         procedure btnSearchClick(Sender: TObject);
-        procedure DBGridClientsDblClick(Sender: TObject);
+    procedure DBGridClientsDblClick(Sender: TObject);
     private
     { Private declarations }
     public
@@ -67,7 +67,7 @@ end;
 
 procedure TFrmSearchClient.DBGridClientsDblClick(Sender: TObject);
 begin
-    with FrmProducts do
+  with FrmProducts do
     begin
         EditCodClient.Text := DBGridClients.columns.items[0].field.text;
         EditDescClient.Text := DBGridClients.columns.items[1].field.text;

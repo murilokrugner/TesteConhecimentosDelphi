@@ -15,12 +15,15 @@ type
         Panel1: TPanel;
         Label1: TLabel;
         EditCod: TEdit;
-    DBGridProducts: TDBGrid;
         btnSearch: TButton;
         QryProdutos: TFDQuery;
         dsProducts: TDataSource;
+    DBGrid1: TDBGrid;
+    QryProdutosCODIGO: TFDAutoIncField;
+    QryProdutosDESCRICAO: TStringField;
+    QryProdutosPRECO: TFMTBCDField;
         procedure btnSearchClick(Sender: TObject);
-    procedure DBGridProductsDblClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
     private
     { Private declarations }
     public
@@ -65,13 +68,13 @@ begin
     end;
 end;
 
-procedure TFrmSearchProduct.DBGridProductsDblClick(Sender: TObject);
+procedure TFrmSearchProduct.DBGrid1DblClick(Sender: TObject);
 begin
   with FrmProducts do
     begin
-        EditCodProduct.Text := DBGridProducts.columns.items[0].field.text;
-        EdiDescProduct.Text := DBGridProducts.columns.items[1].field.text;
-        EditPriceProduct.Text := DBGridProducts.columns.items[2].field.text;
+        EditCodProduct.Text := DBGrid1.columns.items[0].field.text;
+        EdiDescProduct.Text := DBGrid1.columns.items[1].field.text;
+        EditPriceProduct.Text := FormatFloat('0.00', StrToFloat(DBGrid1.columns.items[2].field.text));
 
         FrmSearchProduct.Close;
 

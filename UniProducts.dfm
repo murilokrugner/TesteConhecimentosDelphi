@@ -244,7 +244,6 @@ object FrmProducts: TFrmProducts
       Top = 19
       Width = 121
       Height = 21
-      Enabled = False
       ReadOnly = True
       TabOrder = 0
       OnKeyDown = EditCodOrderKeyDown
@@ -324,9 +323,52 @@ object FrmProducts: TFrmProducts
     Connection = DataModule1.Connection
     Transaction = DataModule1.tr
     SQL.Strings = (
-      'SELECT * FROM VENDAS_PRODUTOS')
+      
+        'SELECT VP.COD_PRODUTO, P.DESCRICAO, VP.QUANTIDADE, VP.VALOR_UNIT' +
+        'ARIO, VP.VALOR_TOTAL FROM VENDAS_PRODUTOS AS VP'#10'INNER JOIN PRODU' +
+        'TOS AS P ON P.CODIGO = VP.COD_PRODUTO')
     Left = 280
     Top = 24
+    object QueryAllProductsCOD_PRODUTO: TIntegerField
+      DisplayLabel = 'C'#211'DIGO'
+      FieldName = 'COD_PRODUTO'
+      Origin = 'COD_PRODUTO'
+      ReadOnly = True
+      Required = True
+    end
+    object QueryAllProductsDESCRICAO: TStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'DESCRI'#199#195'O'
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 60
+    end
+    object QueryAllProductsQUANTIDADE: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QUANTIDADE'
+      Origin = 'QUANTIDADE'
+    end
+    object QueryAllProductsVALOR_UNITARIO: TFMTBCDField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'VALOR UNITARIO'
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      currency = True
+      Precision = 15
+      Size = 6
+    end
+    object QueryAllProductsVALOR_TOTAL: TFMTBCDField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'VALOR TOTAL'
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ReadOnly = True
+      currency = True
+      Precision = 15
+      Size = 6
+    end
   end
   object dsAllProducts: TDataSource
     DataSet = QueryAllProducts

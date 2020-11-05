@@ -49,7 +49,7 @@ object FrmSearchClient: TFrmSearchClient
     Left = 0
     Top = 49
     Width = 601
-    Height = 246
+    Height = 240
     DataSource = dsClients
     ReadOnly = True
     TabOrder = 1
@@ -70,7 +70,7 @@ object FrmSearchClient: TFrmSearchClient
   end
   object dsClients: TDataSource
     DataSet = QryClients
-    Left = 272
-    Top = 16
+    Left = 296
+    Top = 8
   end
 end

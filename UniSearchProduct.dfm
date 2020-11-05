@@ -1,6 +1,7 @@
 object FrmSearchProduct: TFrmSearchProduct
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   Caption = 'Encontrar Produto'
   ClientHeight = 290
   ClientWidth = 599
@@ -11,6 +12,7 @@ object FrmSearchProduct: TFrmSearchProduct
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -43,11 +45,11 @@ object FrmSearchProduct: TFrmSearchProduct
       OnClick = btnSearchClick
     end
   end
-  object DBGridProducts: TDBGrid
+  object DBGrid1: TDBGrid
     Left = 0
-    Top = 47
+    Top = 49
     Width = 601
-    Height = 246
+    Height = 240
     DataSource = dsProducts
     ReadOnly = True
     TabOrder = 1
@@ -56,19 +58,42 @@ object FrmSearchProduct: TFrmSearchProduct
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
-    OnDblClick = DBGridProductsDblClick
+    OnDblClick = DBGrid1DblClick
   end
   object QryProdutos: TFDQuery
     Active = True
     Connection = DataModule1.Connection
+    Transaction = DataModule1.tr
     SQL.Strings = (
       'SELECT * FROM PRODUTOS')
     Left = 280
     Top = 8
+    object QryProdutosCODIGO: TFDAutoIncField
+      DisplayLabel = 'C'#211'DIGO'
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object QryProdutosDESCRICAO: TStringField
+      DisplayLabel = 'DESCRI'#199#195'O'
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Required = True
+      Size = 60
+    end
+    object QryProdutosPRECO: TFMTBCDField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'PRE'#199'O'
+      FieldName = 'PRECO'
+      Origin = 'PRECO'
+      currency = True
+      Precision = 15
+      Size = 6
+    end
   end
   object dsProducts: TDataSource
     DataSet = QryProdutos
-    Left = 368
-    Top = 24
+    Left = 384
+    Top = 65528
   end
 end

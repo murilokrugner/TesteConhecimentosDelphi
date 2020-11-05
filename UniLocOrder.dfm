@@ -65,11 +65,40 @@ object FrmLocOrder: TFrmLocOrder
     Connection = DataModule1.Connection
     SQL.Strings = (
       
-        'SELECT VENDAS.CODIGO, VENDAS.DATA_EMISSAO, CLIENTES.NOME, VENDAS' +
-        '.TOTAL FROM VENDAS '
+        'SELECT VENDAS.COD_VENDA, VENDAS.DATA_EMISSAO, CLIENTES.NOME, VEN' +
+        'DAS.TOTAL FROM VENDAS '
       #10'INNER JOIN CLIENTES ON CLIENTES.CODIGO = VENDAS.COD_CLIENTE')
     Left = 352
     Top = 8
+    object QryOrderCOD_VENDA: TIntegerField
+      DisplayLabel = 'C'#211'DIGO'
+      FieldName = 'COD_VENDA'
+      Origin = 'COD_VENDA'
+      Required = True
+    end
+    object QryOrderDATA_EMISSAO: TDateField
+      DisplayLabel = 'EMISS'#195'O'
+      FieldName = 'DATA_EMISSAO'
+      Origin = 'DATA_EMISSAO'
+      Required = True
+    end
+    object QryOrderNOME: TStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'CLIENTE'
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 60
+    end
+    object QryOrderTOTAL: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+      currency = True
+      Precision = 15
+      Size = 6
+    end
   end
   object dsOrder: TDataSource
     DataSet = QryOrder
