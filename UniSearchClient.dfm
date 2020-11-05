@@ -2,9 +2,10 @@ object FrmSearchClient: TFrmSearchClient
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Encontrar cliente'
-  ClientHeight = 292
-  ClientWidth = 600
+  ClientHeight = 302
+  ClientWidth = 610
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

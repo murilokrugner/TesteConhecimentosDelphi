@@ -1,0 +1,26 @@
+unit uConn;
+
+interface
+
+uses
+    ADODB;
+
+type
+    TConn = class
+    public
+        Conn: TADOConnection;
+        constructor Create;
+    end;
+
+implementation { TConn }
+
+constructor TConn.Create;
+begin
+    Conn := TADOConnection.Create(nil);
+    Conn.LoginPrompt := false;
+    Conn.ConnectionString := 'Provider=SQLOLEDB.1' + ';Password=XXXXX' + ';Persist Security Info=False' + ';User ID=XXXXX' + ';Initial Catalog=Clientes' + ';Data Source=QD_08';
+    Conn.Connected := true;
+end;
+
+end.
+

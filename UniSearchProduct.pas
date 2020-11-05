@@ -18,12 +18,12 @@ type
         btnSearch: TButton;
         QryProdutos: TFDQuery;
         dsProducts: TDataSource;
-    DBGrid1: TDBGrid;
-    QryProdutosCODIGO: TFDAutoIncField;
-    QryProdutosDESCRICAO: TStringField;
-    QryProdutosPRECO: TFMTBCDField;
+        DBGrid1: TDBGrid;
+        QryProdutosCODIGO: TFDAutoIncField;
+        QryProdutosDESCRICAO: TStringField;
+        QryProdutosPRECO: TFMTBCDField;
         procedure btnSearchClick(Sender: TObject);
-    procedure DBGrid1DblClick(Sender: TObject);
+        procedure DBGrid1DblClick(Sender: TObject);
     private
     { Private declarations }
     public
@@ -70,7 +70,7 @@ end;
 
 procedure TFrmSearchProduct.DBGrid1DblClick(Sender: TObject);
 begin
-  with FrmProducts do
+    with FrmProducts do
     begin
         EditCodProduct.Text := DBGrid1.columns.items[0].field.text;
         EdiDescProduct.Text := DBGrid1.columns.items[1].field.text;

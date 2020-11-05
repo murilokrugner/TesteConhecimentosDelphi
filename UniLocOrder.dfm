@@ -2,9 +2,10 @@ object FrmLocOrder: TFrmLocOrder
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Localizar venda'
-  ClientHeight = 293
-  ClientWidth = 598
+  ClientHeight = 303
+  ClientWidth = 608
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

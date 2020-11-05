@@ -2,9 +2,10 @@ object FrmProducts: TFrmProducts
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Produtos'
-  ClientHeight = 492
-  ClientWidth = 690
+  ClientHeight = 502
+  ClientWidth = 700
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -215,7 +216,7 @@ object FrmProducts: TFrmProducts
     Top = 454
     Width = 106
     Height = 35
-    Caption = 'Salvar'
+    Caption = 'Gravar Pedido'
     TabOrder = 3
     OnClick = btnSaveClick
   end

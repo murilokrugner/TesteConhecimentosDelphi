@@ -9,13 +9,18 @@
     <Transaction>2020/11/04 10:08:06.000.269,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\DataModule.dfm</Transaction>
     <Transaction>2020/11/04 10:08:06.000.269,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\DataModule.pas</Transaction>
     <Transaction>2020/11/04 13:53:20.000.522,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2020/11/04 13:53:32.000.133,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchClient.dfm</Transaction>
     <Transaction>2020/11/04 13:53:32.000.133,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchClient.pas</Transaction>
+    <Transaction>2020/11/04 13:53:32.000.133,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchClient.dfm</Transaction>
     <Transaction>2020/11/04 13:57:40.000.761,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2020/11/04 13:57:49.000.003,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchProduct.dfm</Transaction>
     <Transaction>2020/11/04 13:57:49.000.003,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchProduct.pas</Transaction>
+    <Transaction>2020/11/04 13:57:49.000.003,C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\supor\Documents\Embarcadero\Studio\Projects\UniSearchProduct.dfm</Transaction>
     <Transaction>2020/11/04 21:39:41.000.008,=C:\DEV\TesteConhecimentosDelphi\Unit1.pas</Transaction>
     <Transaction>2020/11/04 21:39:52.000.460,C:\DEV\TesteConhecimentosDelphi\Unit1.dfm=C:\DEV\TesteConhecimentosDelphi\UniLocOrder.dfm</Transaction>
     <Transaction>2020/11/04 21:39:52.000.460,C:\DEV\TesteConhecimentosDelphi\Unit1.pas=C:\DEV\TesteConhecimentosDelphi\UniLocOrder.pas</Transaction>
+    <Transaction>2020/11/05 14:18:59.000.903,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/05 14:19:25.000.566,C:\Users\supor\Documents\Embarcadero\Studio\Projects\uClientes.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/05 14:19:57.000.981,=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/05 14:20:05.000.469,C:\Users\supor\Documents\Embarcadero\Studio\Projects\uConn.pas=C:\Users\supor\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/05 15:13:16.000.357,C:\Users\supor\Documents\Embarcadero\Studio\Projects\uConn.pas=</Transaction>
   </Transactions>
 </BorlandProject>

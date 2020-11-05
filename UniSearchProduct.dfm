@@ -2,9 +2,10 @@ object FrmSearchProduct: TFrmSearchProduct
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Encontrar Produto'
-  ClientHeight = 290
-  ClientWidth = 599
+  ClientHeight = 300
+  ClientWidth = 609
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -73,6 +74,7 @@ object FrmSearchProduct: TFrmSearchProduct
       FieldName = 'CODIGO'
       Origin = 'CODIGO'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object QryProdutosDESCRICAO: TStringField
       DisplayLabel = 'DESCRI'#199#195'O'

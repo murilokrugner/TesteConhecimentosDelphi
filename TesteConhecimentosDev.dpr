@@ -6,7 +6,8 @@ uses
   DataModule in 'DataModule.pas' {DataModule1: TDataModule},
   UniSearchClient in 'UniSearchClient.pas' {FrmSearchClient},
   UniSearchProduct in 'UniSearchProduct.pas' {FrmSearchProduct},
-  UniLocOrder in 'UniLocOrder.pas' {FrmLocOrder};
+  UniLocOrder in 'UniLocOrder.pas' {FrmLocOrder},
+  uClientes in 'uClientes.pas';
 
 {$R *.res}
 
