@@ -30,7 +30,7 @@ type
         Label7: TLabel;
         btnAdd: TButton;
         btnClear: TButton;
-        DBGrid1: TDBGrid;
+    DBGridProducts: TDBGrid;
         btnSave: TButton;
         QryClients: TFDQuery;
         Panel3: TPanel;
@@ -48,12 +48,22 @@ type
         QueryAllProducts: TFDQuery;
         dsAllProducts: TDataSource;
     EditPriceProduct: TMaskEdit;
+    QryTotal: TFDQuery;
+    QryTotalPedido: TFDQuery;
+    Label11: TLabel;
+    EditTotal: TMaskEdit;
         procedure EditCodClientKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
         procedure EditCodProductKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
         procedure FormCreate(Sender: TObject);
         procedure btnNewClick(Sender: TObject);
         procedure btnCancelClick(Sender: TObject);
         procedure btnAddClick(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
+    procedure EditCodOrderKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBGridProductsKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure btnClearClick(Sender: TObject);
     private
     { Private declarations }
     public
@@ -66,7 +76,7 @@ var
 implementation
 
 uses
-    DataModule, UniSearchClient, UniSearchProduct;
+    DataModule, UniSearchClient, UniSearchProduct, UniLocOrder;
 
 {$R *.dfm}
 
@@ -74,6 +84,18 @@ procedure TFrmProducts.btnAddClick(Sender: TObject);
 var
     number_order: Integer;
 begin
+    if EditQuant.Text = '' then
+      begin
+        ShowMessage('Por favor, informe a quantidade do produto');
+        exit;
+      end;
+
+    if EditCodProduct.Text = '' then
+      begin
+        ShowMessage('Por favor, informe a quantidade do produto');
+        exit;
+      end;
+
     with QryAuxOrder, SQL do
     begin
         Close;
@@ -120,6 +142,21 @@ begin
                 
                 Open;
               end;
+
+            with QryTotal, SQL do
+              begin
+                Close;
+                Clear;
+
+                Add('SELECT SUM(TOTAL) AS TOTAL FROM VENDAS_PRODUTOS');
+                Add('WHERE COD_VENDA :VENDA');
+
+                ParamByName('VENDA').AsInteger := number_order;
+
+                Open;
+
+                EditTotal.Text := FloatToStr(Fields[0].AsFloat);
+              end;
         end;
     except
         on e: exception do
@@ -138,6 +175,21 @@ begin
     btnCancel.Enabled := False;
 
     btnNew.Enabled := True;
+
+      EditCodOrder.Enabled := False;
+      EditDescClient.Enabled := False;
+      EditCodClient.Enabled := False;
+      EditCityClient.Enabled := False;
+      EditUfClient.Enabled := False;
+      EditCodProduct.Enabled := False;
+      EditDate.Enabled := False;
+      EditQuant.Enabled := False;
+      EditPriceProduct.Enabled := False;
+      EditTotal.Enabled := False;
+      EdiDescProduct.Enabled := False;
+
+      btnAdd.Enabled := False;
+      btnClear.Enabled := False;
 
     try
         with QryOrder, SQL do
@@ -169,6 +221,16 @@ begin
     end;
 end;
 
+procedure TFrmProducts.btnClearClick(Sender: TObject);
+begin
+  EditCodProduct.Clear;
+  EdiDescProduct.Clear;
+  EditPriceProduct.Clear;
+  EditQuant.Clear;
+
+  EditCodProduct.SetFocus;
+end;
+
 procedure TFrmProducts.btnNewClick(Sender: TObject);
 begin
     btnSave.Enabled := True;
@@ -176,13 +238,28 @@ begin
 
     btnNew.Enabled := False;
 
+    EditCodOrder.Enabled := True;
+    EditDescClient.Enabled := True;
+    EditCodClient.Enabled := True;
+    EditCityClient.Enabled := True;
+    EditUfClient.Enabled := True;
+    EditCodProduct.Enabled := True;
+    EditDate.Enabled := True;
+    EditQuant.Enabled := True;
+    EditPriceProduct.Enabled := True;
+    EditTotal.Enabled := True;
+    EdiDescProduct.Enabled := True;
+
+    btnAdd.Enabled := True;
+    btnClear.Enabled := True;
+
     try
         with QryOrder, SQL do
         begin
             Close;
             Clear;
 
-            Add('SELECT COD_VENDA FROM VENDAS ORDER BY COD_VENDA DESC LIMIT 1');
+            Add('select (max(CODIGO) + 1) from VENDAS'); 
 
             Open;
 
@@ -192,7 +269,7 @@ begin
             end
             else
             begin
-                EditCodOrder.Text := IntToStr(Fields[0].AsInteger + 1);
+                EditCodOrder.Text := IntToStr(Fields[0].AsInteger);
             end;
 
             EditDate.Text := DateToStr(Date());
@@ -223,6 +300,179 @@ begin
     end;
 end;
 
+procedure TFrmProducts.btnSaveClick(Sender: TObject);
+var
+  number_order : integer;
+  total : double;
+begin
+  if EditCodClient.Text = '' then
+    begin
+      ShowMessage('Por favor, adicione um cliente');
+      exit;
+    end;
+
+  with QryAuxOrder, SQL do
+    begin
+        Close;
+        Clear;
+
+        Add('SELECT CODIGO FROM VENDAS WHERE COD_VENDA = :VENDA');
+
+        ParamByName('VENDA').AsInteger := StrToInt(EditCodOrder.Text);
+
+        Open;
+
+        number_order := Fields[0].AsInteger;
+    end;
+
+    with QryTotal, SQL do
+      begin
+        Close;
+        Clear;
+
+        Add('SELECT SUM(VALOR_TOTAL) AS TOTAL FROM VENDAS_PRODUTOS '); 
+        Add('WHERE COD_VENDA = :COD_VENDA ');
+
+        ParamByName('COD_VENDA').AsInteger := StrToInt(EditCodOrder.Text);
+         
+        Open;
+
+        total := Fields[0].AsFloat;
+        
+      end;
+
+    with QryOrder, SQL do
+      begin
+        try
+          Close;
+          Clear;
+
+          Add('UPDATE VENDAS SET COD_CLIENTE = :CLIENTE, TOTAL = :TOTAL');
+          Add('WHERE COD_VENDA = :CODIGO');
+
+          ParamByName('CODIGO').AsInteger := StrToInt(EditCodOrder.Text);
+          ParamByName('CLIENTE').AsInteger := StrToInt(EditCodClient.Text);
+          ParamByName('TOTAL').AsFloat := total;
+
+          DataModule1.tr.StartTransaction;
+
+          ExecSQL;
+
+          DataModule1.tr.Commit;
+
+          ShowMessage('A venda foi salva');
+
+          EditCodOrder.Enabled := False;
+          EditDescClient.Enabled := False;
+          EditCodClient.Enabled := False;
+          EditCityClient.Enabled := False;
+          EditUfClient.Enabled := False;
+          EditCodProduct.Enabled := False;
+          EditDate.Enabled := False;
+          EditQuant.Enabled := False;
+          EditPriceProduct.Enabled := False;
+          EditTotal.Enabled := False;
+          EdiDescProduct.Enabled := False;
+
+          btnAdd.Enabled := False;
+          btnClear.Enabled := False;
+        except
+        on e: exception do
+        begin
+            showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
+            DataModule1.tr.Rollback;
+            abort;
+        end;
+
+        end;
+      end;
+end;
+
+procedure TFrmProducts.DBGridProductsKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  number_order : integer;
+begin
+  if (Key = 13) then
+    begin
+      
+      with QryAuxOrder, SQL do
+    begin
+        Close;
+        Clear;
+
+        Add('SELECT CODIGO FROM VENDAS WHERE COD_VENDA = :VENDA');
+
+        ParamByName('VENDA').AsInteger := StrToInt(EditCodOrder.Text);
+
+        Open;
+
+        number_order := Fields[0].AsInteger;
+    end;
+
+      with QryProdutos, SQL do
+        begin
+          try
+            Close;
+            Clear;
+
+            Add('UPDATE VENDAS_PRODUTOS SET QUANTIDADE = :QNT, VALOR_TOTAL = :VALOR');
+            Add('WHERE COD_VENDA = :VENDA AND COD_PRODUTO = :PRODUTO');
+
+            ParamByName('VALOR').AsFloat := StrToFloat(DBGridProducts.columns.items[3].field.text);
+            ParamByName('QNT').AsInteger := StrToInt(DBGridProducts.columns.items[2].field.text);
+            ParamByName('VENDA').AsInteger := number_order;
+            ParamByName('COD_PRODUTO').AsInteger := StrToInt(DBGridProducts.columns.items[0].field.text);;
+
+             DataModule1.tr.StartTransaction;
+
+              ExecSQL;
+
+              DataModule1.tr.Commit;
+
+             ShowMessage('Alterações salvas');
+           except
+            on e: exception do
+            begin
+                showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
+                DataModule1.tr.Rollback;
+                abort;
+            end;
+          end;
+        end;
+    end;
+
+    if (Key = vk_delete) then
+      begin
+        with QryProdutos, SQL do
+        begin
+          try
+            Close;
+            Clear;
+
+            Add('DELETE FROM VENDAS_PRODUTOS WHERE COD_PRODUTO = :PRODUTO');
+
+            ParamByName('PRODUTO').AsInteger := StrToInt(DBGridProducts.columns.items[0].field.text);;
+
+             DataModule1.tr.StartTransaction;
+
+              ExecSQL;
+
+              DataModule1.tr.Commit;
+
+             ShowMessage('O produto foi deletado');
+           except
+            on e: exception do
+            begin
+                showmessage('Erro:' + E.message + #13 + 'Operação Cancelada');
+                DataModule1.tr.Rollback;
+                abort;
+            end;
+          end;
+        end;  
+      end;
+end;
+
 procedure TFrmProducts.EditCodClientKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
     if (Key = VK_F2) then
@@ -234,6 +484,20 @@ begin
             FreeAndNil(FrmSearchClient);
         end;
     end;
+end;
+
+procedure TFrmProducts.EditCodOrderKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_F2) then
+    begin
+        Application.CreateForm(TFrmLocOrder, FrmLocOrder);
+        try
+            FrmLocOrder.ShowModal;
+        finally
+            FreeAndNil(FrmLocOrder);
+        end;
+    end
 end;
 
 procedure TFrmProducts.EditCodProductKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -253,6 +517,8 @@ procedure TFrmProducts.FormCreate(Sender: TObject);
 begin
     btnSave.Enabled := False;
     btnCancel.Enabled := False;
+
+    EditTotal.Text := '0';
 end;
 
 end.

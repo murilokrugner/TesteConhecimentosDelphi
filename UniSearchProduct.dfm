@@ -49,6 +49,7 @@ object FrmSearchProduct: TFrmSearchProduct
     Width = 601
     Height = 246
     DataSource = dsProducts
+    ReadOnly = True
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText

@@ -16,6 +16,19 @@ object FrmProducts: TFrmProducts
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object Label11: TLabel
+    Left = 524
+    Top = 423
+    Width = 45
+    Height = 16
+    Caption = 'TOTAL:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Panel1: TPanel
     Left = -12
     Top = 56
@@ -55,6 +68,7 @@ object FrmProducts: TFrmProducts
       Top = 24
       Width = 313
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 0
     end
@@ -63,6 +77,7 @@ object FrmProducts: TFrmProducts
       Top = 24
       Width = 56
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 1
       OnKeyDown = EditCodClientKeyDown
@@ -72,6 +87,7 @@ object FrmProducts: TFrmProducts
       Top = 24
       Width = 121
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 2
     end
@@ -80,6 +96,7 @@ object FrmProducts: TFrmProducts
       Top = 24
       Width = 41
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 3
     end
@@ -105,7 +122,7 @@ object FrmProducts: TFrmProducts
       Caption = 'Descri'#231#227'o do Produto'
     end
     object Label6: TLabel
-      Left = 372
+      Left = 378
       Top = 19
       Width = 27
       Height = 13
@@ -136,6 +153,7 @@ object FrmProducts: TFrmProducts
       Top = 38
       Width = 63
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 0
       OnKeyDown = EditCodProductKeyDown
@@ -143,17 +161,19 @@ object FrmProducts: TFrmProducts
     object EdiDescProduct: TEdit
       Left = 96
       Top = 38
-      Width = 265
+      Width = 257
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 1
     end
     object btnAdd: TButton
-      Left = 583
+      Left = 575
       Top = 80
       Width = 93
       Height = 25
       Caption = 'Adicionar'
+      Enabled = False
       TabOrder = 2
       OnClick = btnAddClick
     end
@@ -163,21 +183,24 @@ object FrmProducts: TFrmProducts
       Width = 94
       Height = 25
       Caption = 'Limpar'
+      Enabled = False
       TabOrder = 3
+      OnClick = btnClearClick
     end
     object EditQuant: TEdit
       Left = 487
       Top = 38
       Width = 121
       Height = 21
+      Enabled = False
       TabOrder = 4
     end
   end
-  object DBGrid1: TDBGrid
+  object DBGridProducts: TDBGrid
     Left = -7
     Top = 238
     Width = 696
-    Height = 210
+    Height = 179
     DataSource = dsAllProducts
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
@@ -185,6 +208,7 @@ object FrmProducts: TFrmProducts
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnKeyDown = DBGridProductsKeyDown
   end
   object btnSave: TButton
     Left = 583
@@ -193,6 +217,7 @@ object FrmProducts: TFrmProducts
     Height = 35
     Caption = 'Salvar'
     TabOrder = 3
+    OnClick = btnSaveClick
   end
   object Panel3: TPanel
     Left = 0
@@ -203,9 +228,9 @@ object FrmProducts: TFrmProducts
     object Label8: TLabel
       Left = 10
       Top = 4
-      Width = 81
+      Width = 104
       Height = 13
-      Caption = 'C'#243'digo da venda'
+      Caption = 'C'#243'digo da venda (F2)'
     end
     object Label9: TLabel
       Left = 152
@@ -219,14 +244,17 @@ object FrmProducts: TFrmProducts
       Top = 19
       Width = 121
       Height = 21
+      Enabled = False
       ReadOnly = True
       TabOrder = 0
+      OnKeyDown = EditCodOrderKeyDown
     end
     object EditDate: TMaskEdit
       Left = 152
       Top = 19
       Width = 79
       Height = 21
+      Enabled = False
       EditMask = '!99/99/0000;1;_'
       MaxLength = 10
       ReadOnly = True
@@ -253,11 +281,22 @@ object FrmProducts: TFrmProducts
     OnClick = btnCancelClick
   end
   object EditPriceProduct: TMaskEdit
-    Left = 372
+    Left = 378
     Top = 165
     Width = 92
     Height = 21
+    Enabled = False
     TabOrder = 7
+    Text = ''
+  end
+  object EditTotal: TMaskEdit
+    Left = 575
+    Top = 423
+    Width = 107
+    Height = 21
+    Enabled = False
+    ReadOnly = True
+    TabOrder = 8
     Text = ''
   end
   object QryClients: TFDQuery
@@ -293,5 +332,17 @@ object FrmProducts: TFrmProducts
     DataSet = QueryAllProducts
     Left = 216
     Top = 40
+  end
+  object QryTotal: TFDQuery
+    Connection = DataModule1.Connection
+    Transaction = DataModule1.tr
+    Left = 304
+    Top = 120
+  end
+  object QryTotalPedido: TFDQuery
+    Connection = DataModule1.Connection
+    Transaction = DataModule1.tr
+    Left = 192
+    Top = 136
   end
 end

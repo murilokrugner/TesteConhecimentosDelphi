@@ -5,7 +5,8 @@ uses
   UniProducts in 'UniProducts.pas' {FrmProducts},
   DataModule in 'DataModule.pas' {DataModule1: TDataModule},
   UniSearchClient in 'UniSearchClient.pas' {FrmSearchClient},
-  UniSearchProduct in 'UniSearchProduct.pas' {FrmSearchProduct};
+  UniSearchProduct in 'UniSearchProduct.pas' {FrmSearchProduct},
+  UniLocOrder in 'UniLocOrder.pas' {FrmLocOrder};
 
 {$R *.res}
 
@@ -16,5 +17,6 @@ begin
   Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TFrmSearchClient, FrmSearchClient);
   Application.CreateForm(TFrmSearchProduct, FrmSearchProduct);
+  Application.CreateForm(TFrmLocOrder, FrmLocOrder);
   Application.Run;
 end.
